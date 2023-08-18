@@ -2,25 +2,15 @@ import React from "react";
 
 type headerProps = {
   status: string;
-  xIcon: string;
-  squares: string[];
-  setCurrentPlayer: React.Dispatch<React.SetStateAction<string>>; // this is a function that takes in a string and returns void
-  setSymbol: React.Dispatch<React.SetStateAction<string>>; // this is a function that takes in a string and returns void
-  setGameBoard: React.Dispatch<React.SetStateAction<string[]>>; // this is a function that takes in a string array and returns void
-};
+  shouldReset: React.Dispatch<React.SetStateAction<boolean>>;
+  };
 
 const GameHeader: React.FC<headerProps> = ({
   status,
-  xIcon,
-  squares,
-  setGameBoard,
-  setCurrentPlayer,
-  setSymbol,
+  shouldReset
 }) => {
   function handleReset() {
-    setGameBoard(squares);
-    setCurrentPlayer(xIcon);
-    setSymbol("X");
+    shouldReset(true)
   }
 
   return (
