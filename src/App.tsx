@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Grid from "./components/Grid";
 import GameHeader from "./components/GameHeader";
@@ -14,10 +14,21 @@ function App() {
   const [gameBoard, setGameBoard] = useState(squares);
   const [player, setCurrentPlayer] = useState(xIcon);
   const [symbol, setSymbol] = useState("X");
+  const [shouldReset, setShouldReset] = useState(false); // Flag for resetting
+
+  useEffect(() => {
+    if (shouldReset) {
+      // Reset the game logic here
+      setGameBoard(squares);
+      setCurrentPlayer(xIcon);
+      setSymbol("X");
+      setShouldReset(false); // Reset the flag
+    }
+  }, [shouldReset, squares]);
 
   const handleOnClick = (index: number) => {
     if (gameBoard[index] === "" && !checkWinner(gameBoard)) {
-      const newGameBoard = [...gameBoard];
+      const newGameBoard = gameBoard.slice(); // Create a copy
       newGameBoard[index] = player;
       setGameBoard(newGameBoard);
       setSymbol(player === xIcon ? "O" : "X");
@@ -72,14 +83,7 @@ function App() {
   return (
     <div className="container">
       <div className="game">
-        <GameHeader
-          setSymbol={setSymbol}
-          setCurrentPlayer={setCurrentPlayer}
-          setGameBoard={setGameBoard}
-          squares={squares}
-          status={status}
-          xIcon={""}
-        />
+        <GameHeader status={status} shouldReset={setShouldReset} />
         {winner ? (
           <GameOver winner={winner} />
         ) : (
